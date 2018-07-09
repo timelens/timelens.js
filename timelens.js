@@ -19,22 +19,6 @@ function from_timestamp(timestamp) {
     return seconds_total;
 }
 
-// Get the video ID from an embedded YouTube video, or, alteratively,
-// if `element` is not an iframe, from the `id` data-attribute.
-function getID(element) {
-    if (element.is("iframe")) {
-        var vid = element
-            .attr("src")
-            .split("/")
-            .pop();
-        var url = element.attr("src");
-        var regExp = /.*(?:youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=)([^#\&\?]*).*/;
-        return url.match(regExp)[1];
-    } else {
-        return element.data("id");
-    }
-}
-
 // How far is the mouse into the timeline, in a range from 0 to 1?
 function progressAtMouse(event, timeline) {
     x = event.offsetX ? event.offsetX : event.pageX - timeline.offsetLeft;
@@ -43,12 +27,10 @@ function progressAtMouse(event, timeline) {
 
 // Load VTT file asynchronously, then continue with the initialization.
 function initTimelens(element, options) {
-    let vid = getID(element);
     let vtt_url;
     if (options.thumbnails) {
         vtt_url = options.thumbnails;
     }
-    //let vtt_url = "thumbnails/" + vid + ".vtt";
 
     var request = new XMLHttpRequest();
     request.open('GET', vtt_url, true);
@@ -66,28 +48,6 @@ function initTimelens(element, options) {
 // Actually initialize Timelens.
 function initTimelens2(element, vtt, options) {
     var thumbnails = parseVTT(vtt);
-    var vid = getID(element);
-
-    // Select mode based on which element we get:
-    // In "youtube" mode, add a progress indicator and interact with the iframe player.
-    // In "standalone" mode, don't do anything fancy.
-    var mode = "standalone";
-    if (element.is("iframe")) {
-        mode = "youtube";
-    }
-
-    if (mode == "youtube") {
-        // Hide controls, branding, related videos, and video annotations,
-        // and enable player to be controlled via the JavaScript API.
-        element.attr(
-            "src",
-            element.attr("src") +
-            "&enablejsapi=1&controls=0&modestbranding=1&rel=0&iv_load_policy=3"
-        );
-
-        // Set id of the Iframe to the video ID, so we can find it later
-        element.attr("id", vid);
-    }
 
     // Create main .timelens div, which will contain all new elements.
     var timelens = $(document.createElement("div"));
@@ -103,24 +63,11 @@ function initTimelens2(element, vtt, options) {
     // Prevent the timeline image to be dragged
     timeline.attr("draggable", "false");
 
-    // For YouTube videos, we want to append the Timelens interface to the parent,
-    // because the Iframe will be wrapped in another div for responsiveness;
-    // for other elements, we want to append it directly.
-    var root = element;
-    if (mode == "youtube") {
-        var root = element.parent();
-    }
-
     // Assemble everything together.
-    if (mode == "youtube") {
-        root.after(timelens.get(0));
-    } else {
-        root.append(timelens.get(0));
-    }
+    element.append(timelens.get(0));
     timelens.append(thumbnail.get(0));
     timelens.append(timeline.get(0));
 
-    //if (mode == "youtube") {
     // Create .marker div, which is used to display the current position.
     if (options.position) {
         var marker = $(document.createElement("div"));
@@ -128,21 +75,11 @@ function initTimelens2(element, vtt, options) {
         timelens.append(marker.get(0));
     }
 
-    // Get duration in seconds.
-    if (mode == "youtube") {
-        var duration = player.getDuration();
-    } else {
-        var duration = options.duration();
-    }
-
     // When clicking the timeline, seek to the respective position.
     timeline.click(function(event) {
-        var progress = progressAtMouse(event, timeline, player);
-        var duration = from_timestamp(element.data("duration"));
-        element.trigger("seek", progress * duration);
-        //player.seekTo(progress * player.getDuration(), true);
+        var progress = progressAtMouse(event, timeline);
+        element.trigger("seek", progress * options.duration());
     });
-    //}
 
     // Fade thumbnail in/out when mouse enters/leaves the timeline.
     timeline.mouseover(function(event) {
@@ -155,7 +92,7 @@ function initTimelens2(element, vtt, options) {
     timeline.mousemove(function(event) {
         // Calculate click position in seconds.
         var progress = progressAtMouse(event, timeline);
-        let seconds = (x / timeline.width()) * duration;
+        let seconds = (x / timeline.width()) * options.duration();
 
         // Find the first entry in `thumbnails` which contains the current position.
         let active_thumbnail = null;
@@ -185,23 +122,10 @@ function initTimelens2(element, vtt, options) {
         ) + "px";
     });
 
-    if (mode == "youtube") {
-        var player = new YT.Player(vid, {
-            events: {
-                onReady: function() {
-                    // Move marker to the correct position each second.
-                    setInterval(function() {
-                        marker.get(0).style.marginLeft = player.getCurrentTime() / player.getDuration() * timeline.width() - 11 + "px";
-                    }, 1);
-                }
-            }
-        });
-    } else {
-        if (options.position) {
-            setInterval(function() {
-                marker.get(0).style.marginLeft = options.position() / duration * timeline.width() - 11 + "px";
-            }, 1);
-        }
+    if (options.position) {
+        setInterval(function() {
+            marker.get(0).style.marginLeft = options.position() / options.duration() * timeline.width() - 11 + "px";
+        }, 1);
     }
 }
 
