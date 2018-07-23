@@ -49,9 +49,9 @@ function initTimelens(element, options) {
 function initTimelens2(element, vtt, options) {
     var thumbnails = parseVTT(vtt);
 
-    // Create main .timelens div, which will contain all new elements.
-    var timelens = $(document.createElement("div"));
-    timelens.attr("class", "timelens");
+    // This will be our main .timelens div, which will contain all new elements.
+    var timelens = element;
+    timelens.addClass("timelens");
 
     // Create .thumbnail div, which contains the preview thumbnails.
     var thumbnail = $(document.createElement("div"));
@@ -78,7 +78,7 @@ function initTimelens2(element, vtt, options) {
     // When clicking the timeline, seek to the respective position.
     timeline.click(function(event) {
         var progress = progressAtMouse(event, timeline);
-        element.trigger("seek", progress * options.duration());
+        options.seek(progress * options.duration());
     });
 
     // Fade thumbnail in/out when mouse enters/leaves the timeline.
@@ -92,7 +92,9 @@ function initTimelens2(element, vtt, options) {
     timeline.mousemove(function(event) {
         // Calculate click position in seconds.
         var progress = progressAtMouse(event, timeline);
-        let seconds = (x / timeline.width()) * options.duration();
+        let seconds = progress * options.duration();
+
+        let thumbnail_dir = options.thumbnails.substring(0, options.thumbnails.lastIndexOf("/") + 1);
 
         // Find the first entry in `thumbnails` which contains the current position.
         let active_thumbnail = null;
@@ -106,7 +108,7 @@ function initTimelens2(element, vtt, options) {
         // Set respective background image.
         thumbnail.css(
             "background-image",
-            "url(thumbnails/" + active_thumbnail.file + "), url(loading.png)"
+            "url(" + thumbnail_dir + active_thumbnail.file + "), url(loading.png)"
         );
         // Move background to the correct location.
         thumbnail.css("background-position", -active_thumbnail.x + "px " + -active_thumbnail.y + "px");

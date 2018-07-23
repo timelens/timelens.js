@@ -1,37 +1,5 @@
-.frame {
-    position: relative;
-    padding-top: 56.25%;
-    margin-top: 3em;
-}
-
-iframe {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    border: none;
-}
-
 .timelens {
   position: relative;
-}
-
-.timelens .thumbnail {
-  border: solid white 5px;
-  border-radius: 5px;
-  box-shadow: 0 0 0 blue, 0 0 7px black;
-  width: 0px;
-  height: 0px;
-  position: absolute;
-  top: -110px;
-  display: none;
-}
-
-.frame + .timelens img {
-  border: none;
-  border-radius: 0;
-  cursor: pointer;
 }
 
 .timelens img {
@@ -43,6 +11,17 @@ iframe {
   -khtml-user-select: none;
   -webkit-user-select: none;
   -o-user-select: none;
+}
+
+.timelens .thumbnail {
+  border: solid white 5px;
+  border-radius: 5px;
+  box-shadow: 0 0 0 blue, 0 0 7px black;
+  width: 0px;
+  height: 0px;
+  position: absolute;
+  top: -110px;
+  display: none;
 }
 
 .timelens .marker {
