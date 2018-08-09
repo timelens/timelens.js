@@ -121,8 +121,8 @@ function initTimelens2(element, vtt, options) {
 
         // Move thumbnail div to the correct position.
         thumbnail.get(0).style.marginLeft = Math.min(
-            Math.max(10, x - active_thumbnail.w / 2 - 5),
-            timeline.width() - active_thumbnail.w - 20
+            Math.max(0, x - active_thumbnail.w / 2 - 5),
+            timeline.width() - active_thumbnail.w
         ) + "px";
     });
 
