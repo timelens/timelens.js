@@ -48,6 +48,7 @@ function initTimelens(element, options) {
 // Actually initialize Timelens.
 function initTimelens2(element, vtt, options) {
     var thumbnails = parseVTT(vtt);
+    var duration = thumbnails[thumbnails.length - 1].to;
 
     // This will be our main .timelens div, which will contain all new elements.
     var timelens = element;
@@ -79,7 +80,7 @@ function initTimelens2(element, vtt, options) {
     if (!!options.seek) {
         timeline.click(function(event) {
             var progress = progressAtMouse(event, timeline);
-            options.seek(progress * options.duration());
+            options.seek(progress * duration);
         });
     }
 
@@ -94,7 +95,7 @@ function initTimelens2(element, vtt, options) {
     timeline.mousemove(function(event) {
         // Calculate click position in seconds.
         var progress = progressAtMouse(event, timeline);
-        let seconds = progress * options.duration();
+        let seconds = progress * duration;
 
         let thumbnail_dir = options.thumbnails.substring(0, options.thumbnails.lastIndexOf("/") + 1);
 
@@ -128,7 +129,7 @@ function initTimelens2(element, vtt, options) {
 
     if (options.position) {
         setInterval(function() {
-            marker.get(0).style.marginLeft = options.position() / options.duration() * timeline.width() - 11 + "px";
+            marker.get(0).style.marginLeft = options.position() / duration * timeline.width() - 11 + "px";
         }, 1);
     }
 }
