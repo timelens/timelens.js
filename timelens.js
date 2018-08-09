@@ -76,10 +76,12 @@ function initTimelens2(element, vtt, options) {
     }
 
     // When clicking the timeline, seek to the respective position.
-    timeline.click(function(event) {
-        var progress = progressAtMouse(event, timeline);
-        options.seek(progress * options.duration());
-    });
+    if (!!options.seek) {
+        timeline.click(function(event) {
+            var progress = progressAtMouse(event, timeline);
+            options.seek(progress * options.duration());
+        });
+    }
 
     // Fade thumbnail in/out when mouse enters/leaves the timeline.
     timeline.mouseover(function(event) {
