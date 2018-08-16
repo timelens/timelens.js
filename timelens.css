@@ -24,7 +24,14 @@
   height: 0px;
   position: absolute;
   top: -110px;
-  display: none;
+  z-index: -1000;
+  opacity: 0;
+  transition: opacity 0.2s, z-index 0.2s;
+}
+
+.timelens img:hover + .thumbnail {
+  z-index: 1000;
+  opacity: 1;
 }
 
 .timelens .marker {
