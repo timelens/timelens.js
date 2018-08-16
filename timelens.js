@@ -12,14 +12,14 @@ function timelens(container, options) {
         if (request.readyState === 4 && request.status === 200) {
             var type = request.getResponseHeader('Content-Type');
             if (type.indexOf("text") !== 1) {
-                initTimelens2(container, request.responseText, options);
+                timelens2(container, request.responseText, options);
             }
         }
     }
 }
 
 // Actually initialize Timelens.
-function initTimelens2(container, vtt, options) {
+function timelens2(container, vtt, options) {
     var thumbnails = parseVTT(vtt);
     var duration = thumbnails[thumbnails.length - 1].to;
 
@@ -79,7 +79,7 @@ function initTimelens2(container, vtt, options) {
         }
 
         // Set respective background image.
-        thumbnail.style["background-image"] = "url(" + thumbnail_dir + active_thumbnail.file + "), url(loading.png)";
+        thumbnail.style["background-image"] = "url(" + thumbnail_dir + active_thumbnail.file + ")";
         // Move background to the correct location.
         thumbnail.style["background-position"] = -active_thumbnail.x + "px " + -active_thumbnail.y + "px";
 
