@@ -1,3 +1,5 @@
+/* Common functionality */
+
 function timelens(container, options) {
     // Load VTT file asynchronously, then continue with the initialization.
     let vtt_url;
@@ -177,4 +179,60 @@ function parseVTT(vtt) {
 
 function pad(num, size){
     return ('000000000' + num).substr(-size);
+}
+
+/* MediaElement.js */
+
+if (MediaElementPlayer) {
+    Object.assign(MediaElementPlayer.prototype, {
+        buildtimelens(player, controls, layers, media) {
+            const t = this;
+
+            // Get the timeline from the video's "timeline" attribute.
+            let vid = media.querySelector("video");
+            let timeline = vid.dataset.timeline;
+
+            // Get the thumbnails VTT from a "thumbnails" track.
+            let thumbnailsTrack = vid.querySelector("track[label=\"thumbnails\"]");
+            let thumbnails = thumbnailsTrack.src;
+
+            let slider = controls.querySelector('.' + t.options.classPrefix + 'time-slider');
+
+            // Initialize the Timelens interface.
+            timelens(slider, {
+                timeline: timeline,
+                thumbnails: thumbnails
+            });
+        },
+
+        cleantimelens(player, controls, layers, media) {}
+    });
+}
+
+/* Clappr */
+
+if (Clappr) {
+    class TimelensPlugin extends Clappr.UICorePlugin {
+        get name() {
+            return "timelens"
+        }
+
+        constructor(core) {
+            super(core)
+        }
+
+        bindEvents() {
+            this.listenTo(this.core.mediaControl, Clappr.Events.MEDIACONTROL_RENDERED, this._init)
+        }
+
+        _init() {
+            var bar = this.core.mediaControl.el.querySelector(".bar-background");
+
+            // Initialize the Timelens interface.
+            timelens(bar, {
+                timeline: this.core.options.timelens.timeline,
+                thumbnails: this.core.options.timelens.thumbnails
+            });
+        }
+    }
 }
