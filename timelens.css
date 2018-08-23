@@ -9,6 +9,12 @@
     height: 100%;
     display: block;
 
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+
     position: relative;
 }
 
@@ -20,7 +26,7 @@
     width: 0px;
     height: 0px;
     position: absolute;
-    top: -110px;
+    top: -95px;
     z-index: -1;
     opacity: 0;
     transition: opacity 0.2s, z-index 0.2s;
@@ -51,18 +57,27 @@
 .timelens-marker {
     width: 0px;
     height: 0px;
-    border-bottom: 11px solid black;
-    border-left: 11px solid transparent;
-    border-right: 11px solid transparent;
+    border-top: 15px solid red !important;
+    border-left: 15px solid transparent !important;
+    border-right: 15px solid transparent !important;
+    position: absolute;
+    top: 0px;
+    z-index: 999;
+    transform: translateX(-50%);
 }
 
 /* MediaElement.js */
 
 .mejs__time-slider {
     height: 40px;
-    margin-top: -15px;
+    margin-top: -10px;
 }
 
+.mejs__time-buffering,
+.mejs__time-loaded,
+.mejs__time-current,
+.mejs__time-hovered,
+.mejs__time-handle,
 .mejs__time-float {
     display: none !important;
 }
@@ -70,9 +85,16 @@
 /* Clappr */
 
 .media-control .bar-background {
-    height: 10px !important;
+    height: 40px !important;
+    margin-top: -40px;
 }
 
-.media-control .seek-time {
+.media-control .seek-time,
+.media-control .bar-scrubber,
+.media-control .bar-hover {
     display: none !important;
+}
+
+.media-control-hide {
+    bottom: -40px !important;
 }

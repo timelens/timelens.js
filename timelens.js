@@ -49,17 +49,17 @@ function timelens2(container, vtt, options) {
     // Prevent the timeline image to be dragged
     timeline.setAttribute("draggable", "false");
 
-    // Assemble everything together.
-    container.appendChild(timeline);
-    container.appendChild(thumbnail);
-    thumbnail.appendChild(time);
-
     // Create .marker div, which is used to display the current position.
     if (options.position) {
         var marker = document.createElement("div");
         marker.className = "timelens-marker";
         container.appendChild(marker);
     }
+
+    // Assemble everything together.
+    container.appendChild(timeline);
+    container.appendChild(thumbnail);
+    thumbnail.appendChild(time);
 
     // When clicking the timeline, seek to the respective position.
     if (options.seek) {
@@ -113,9 +113,7 @@ function timelens2(container, vtt, options) {
     if (options.position) {
         setInterval(function() {
             marker.style.marginLeft =
-                (options.position() / duration) * timeline.offsetWidth -
-                11 +
-                "px";
+                (options.position() / duration) * timeline.offsetWidth + "px";
         }, 1);
     }
 }
@@ -215,7 +213,10 @@ if (typeof MediaElementPlayer !== "undefined") {
             // Initialize the Timelens interface.
             timelens(slider, {
                 timeline: timeline,
-                thumbnails: thumbnails
+                thumbnails: thumbnails,
+                position: function() {
+                    return player.currentTime;
+                }
             });
         }
     });
@@ -246,10 +247,15 @@ if (typeof Clappr !== "undefined") {
                 ".bar-background"
             );
 
+            let t = this;
+
             // Initialize the Timelens interface.
             timelens(bar, {
                 timeline: this.core.options.timelens.timeline,
-                thumbnails: this.core.options.timelens.thumbnails
+                thumbnails: this.core.options.timelens.thumbnails,
+                position: function() {
+                    return t.core.containers[0].getCurrentTime();
+                }
             });
         }
     }
