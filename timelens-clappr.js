@@ -19,8 +19,5 @@ class TimelensPlugin extends Clappr.UICorePlugin {
             timeline: this.core.options.timelens.timeline,
             thumbnails: this.core.options.timelens.thumbnails
         });
-
-        // Make the bar thicker.
-        bar.style.height = "10px";
     }
 }

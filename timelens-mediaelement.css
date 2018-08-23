@@ -1,0 +1,11 @@
+/* Make the time slider thicker and shift it up. */
+.mejs__time-slider {
+    height: 40px;
+    margin-top: -15px;
+}
+
+/* Hide time float, we supply our own. */
+.mejs__time-float {
+    display: none !important;
+}
+
