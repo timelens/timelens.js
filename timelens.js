@@ -33,13 +33,13 @@ function timelens2(container, vtt, options) {
     }
     container.className += "timelens";
 
-    // Create .thumbnail div, which contains the preview thumbnails.
+    // Create div which contains the preview thumbnails.
     var thumbnail = document.createElement("div");
-    thumbnail.className = "thumbnail";
+    thumbnail.className = "timelens-thumbnail";
 
-    // Create .time div, which contains the thumbnail time.
+    // Create div which contains the thumbnail time.
     var time = document.createElement("div");
-    time.className = "time";
+    time.className = "timelens-time";
 
     // Create .timeline img, which displays the visual timeline.
     var timeline = document.createElement("img");
@@ -55,7 +55,7 @@ function timelens2(container, vtt, options) {
     // Create .marker div, which is used to display the current position.
     if (options.position) {
         var marker = document.createElement("div");
-        marker.className = "marker";
+        marker.className = "timelens-marker";
         container.appendChild(marker);
     }
 
