@@ -15,6 +15,10 @@ Object.assign(MediaElementPlayer.prototype, {
         slider.style.height = "40px";
         slider.style["margin-top"] = "-15px";
 
+        // Move the time display to the front.
+        let time_float = controls.querySelector('.' + t.options.classPrefix + 'time-float');
+        time_float.style["z-index"] = "999";
+
         // Initialize the Timelens interface.
         timelens(slider, {
             timeline: timeline,

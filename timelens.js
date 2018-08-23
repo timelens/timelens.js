@@ -37,6 +37,10 @@ function timelens2(container, vtt, options) {
     var thumbnail = document.createElement("div");
     thumbnail.className = "thumbnail";
 
+    // Create .time div, which contains the thumbnail time.
+    var time = document.createElement("div");
+    time.className = "time";
+
     // Create .timeline img, which displays the visual timeline.
     var timeline = document.createElement("img");
     timeline.src = options.timeline;
@@ -46,6 +50,7 @@ function timelens2(container, vtt, options) {
     // Assemble everything together.
     container.appendChild(timeline);
     container.appendChild(thumbnail);
+    thumbnail.appendChild(time);
 
     // Create .marker div, which is used to display the current position.
     if (options.position) {
@@ -92,6 +97,8 @@ function timelens2(container, vtt, options) {
             Math.max(0, x - active_thumbnail.w / 2 - 5),
             timeline.offsetWidth - active_thumbnail.w
         ) + "px";
+
+        time.innerHTML = to_timestamp(seconds);
     };
 
     if (options.position) {
@@ -112,6 +119,21 @@ function from_timestamp(timestamp) {
     let seconds_total = mseconds / 1000 + seconds + 60 * minutes;
 
     return seconds_total;
+}
+
+// Convert a position in seconds to a [H:]MM:SS timestamp.
+function to_timestamp(seconds_total) {
+    let hours = Math.floor(seconds_total / 60 / 60);
+    let minutes = Math.floor(seconds_total / 60 - hours * 60);
+    let seconds = Math.floor(seconds_total - 60 * minutes - hours * 60 * 60);
+
+    let timestamp = minutes+":"+pad(seconds, 2);
+
+    if (hours > 0) {
+        return hours + ":" + pad(timestamp, 5);
+    } else {
+        return timestamp;
+    }
 }
 
 // How far is the mouse into the timeline, in a range from 0 to 1?
@@ -151,4 +173,8 @@ function parseVTT(vtt) {
     }
 
     return thumbnails;
+}
+
+function pad(num, size){
+    return ('000000000' + num).substr(-size);
 }
