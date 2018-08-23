@@ -94,8 +94,8 @@ function timelens2(container, vtt, options) {
 
         // Move thumbnail div to the correct position.
         thumbnail.style.marginLeft = Math.min(
-            Math.max(0, x - active_thumbnail.w / 2 - 5),
-            timeline.offsetWidth - active_thumbnail.w
+            Math.max(0, x - thumbnail.offsetWidth / 2),
+            timeline.offsetWidth - thumbnail.offsetWidth
         ) + "px";
 
         time.innerHTML = to_timestamp(seconds);

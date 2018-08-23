@@ -12,7 +12,7 @@
 
 .timelens-thumbnail {
   background: black;
-  border: solid rgba(0, 0, 0, 0.8) 3px;
+  border: solid rgba(28, 28, 28, 0.9) 3px;
   border-radius: 3px;
   background-clip: content-box;
   width: 0px;
@@ -26,8 +26,8 @@
 
 .timelens-time {
     font-size: 15px;
-    color: white;
-    background: rgba(0, 0, 0, 0.8);
+    color: #eee;
+    background: rgba(28, 28, 28, 0.9);
     position: absolute;
     left: 50%;
     bottom: 0;
