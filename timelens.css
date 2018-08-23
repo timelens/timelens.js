@@ -12,9 +12,9 @@
 
 .timelens-thumbnail {
   background: black;
-  border: solid white 5px;
-  border-radius: 5px;
-  box-shadow: 0 0 0 blue, 0 0 7px black;
+  border: solid rgba(0, 0, 0, 0.8) 3px;
+  border-radius: 3px;
+  background-clip: content-box;
   width: 0px;
   height: 0px;
   position: absolute;
