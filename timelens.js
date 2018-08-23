@@ -7,12 +7,12 @@ function timelens(container, options) {
         vtt_url = options.thumbnails;
     }
 
-    var request = new XMLHttpRequest();
+    const request = new XMLHttpRequest();
     request.open("GET", vtt_url, true);
     request.send(null);
     request.onreadystatechange = function() {
         if (request.readyState === 4 && request.status === 200) {
-            var type = request.getResponseHeader("Content-Type");
+            const type = request.getResponseHeader("Content-Type");
             if (type.indexOf("text") !== 1) {
                 timelens2(container, request.responseText, options);
             }
@@ -22,8 +22,8 @@ function timelens(container, options) {
 
 // Actually initialize Timelens.
 function timelens2(container, vtt, options) {
-    var thumbnails = parseVTT(vtt);
-    var duration = thumbnails[thumbnails.length - 1].to;
+    const thumbnails = parseVTT(vtt);
+    const duration = thumbnails[thumbnails.length - 1].to;
 
     // Use querySelector if a selector string is specified.
     if (typeof container == "string")
@@ -36,15 +36,15 @@ function timelens2(container, vtt, options) {
     container.className += "timelens";
 
     // Create div which contains the preview thumbnails.
-    var thumbnail = document.createElement("div");
+    const thumbnail = document.createElement("div");
     thumbnail.className = "timelens-thumbnail";
 
     // Create div which contains the thumbnail time.
-    var time = document.createElement("div");
+    const time = document.createElement("div");
     time.className = "timelens-time";
 
     // Create .timeline img, which displays the visual timeline.
-    var timeline = document.createElement("img");
+    const timeline = document.createElement("img");
     timeline.src = options.timeline;
     // Prevent the timeline image to be dragged
     timeline.setAttribute("draggable", "false");
@@ -62,19 +62,20 @@ function timelens2(container, vtt, options) {
     }
 
     // When clicking the timeline, seek to the respective position.
-    if (!!options.seek) {
+    if (options.seek) {
         timeline.onclick = function(event) {
-            var progress = progressAtMouse(event, timeline);
+            const progress = progressAtMouse(event, timeline);
             options.seek(progress * duration);
         };
     }
 
     timeline.onmousemove = function(event) {
         // Calculate click position in seconds.
-        var progress = progressAtMouse(event, timeline);
-        let seconds = progress * duration;
+        const progress = progressAtMouse(event, timeline);
+        const seconds = progress * duration;
+        const x = progress * timeline.offsetWidth;
 
-        let thumbnail_dir = options.thumbnails.substring(
+        const thumbnail_dir = options.thumbnails.substring(
             0,
             options.thumbnails.lastIndexOf("/") + 1
         );
@@ -121,24 +122,24 @@ function timelens2(container, vtt, options) {
 
 // Convert a WebVTT timestamp (which has the format [HH:]MM:SS.mmm) to seconds.
 function from_timestamp(timestamp) {
-    let matches = timestamp.match(/(.*):(.*)\.(.*)/);
+    const matches = timestamp.match(/(.*):(.*)\.(.*)/);
 
-    let minutes = parseInt(matches[1]);
-    let seconds = parseInt(matches[2]);
-    let mseconds = parseInt(matches[3]);
+    const minutes = parseInt(matches[1]);
+    const seconds = parseInt(matches[2]);
+    const mseconds = parseInt(matches[3]);
 
-    let seconds_total = mseconds / 1000 + seconds + 60 * minutes;
+    const seconds_total = mseconds / 1000 + seconds + 60 * minutes;
 
     return seconds_total;
 }
 
 // Convert a position in seconds to a [H:]MM:SS timestamp.
 function to_timestamp(seconds_total) {
-    let hours = Math.floor(seconds_total / 60 / 60);
-    let minutes = Math.floor(seconds_total / 60 - hours * 60);
-    let seconds = Math.floor(seconds_total - 60 * minutes - hours * 60 * 60);
+    const hours = Math.floor(seconds_total / 60 / 60);
+    const minutes = Math.floor(seconds_total / 60 - hours * 60);
+    const seconds = Math.floor(seconds_total - 60 * minutes - hours * 60 * 60);
 
-    let timestamp = minutes + ":" + pad(seconds, 2);
+    const timestamp = minutes + ":" + pad(seconds, 2);
 
     if (hours > 0) {
         return hours + ":" + pad(timestamp, 5);
@@ -149,7 +150,7 @@ function to_timestamp(seconds_total) {
 
 // How far is the mouse into the timeline, in a range from 0 to 1?
 function progressAtMouse(event, timeline) {
-    x = event.offsetX ? event.offsetX : event.pageX - timeline.offsetLeft;
+    const x = event.offsetX ? event.offsetX : event.pageX - timeline.offsetLeft;
     return x / timeline.offsetWidth;
 }
 
@@ -163,13 +164,13 @@ function parseVTT(vtt) {
     for (let line of vtt.split("\n")) {
         if (/-->/.test(line)) {
             // Parse a "cue timings" part.
-            var matches = line.match(/(.*) --> (.*)/);
+            const matches = line.match(/(.*) --> (.*)/);
 
             from = from_timestamp(matches[1]);
             to = from_timestamp(matches[2]);
         } else if (/jpg/.test(line)) {
             // Parse a "cue payload" part.
-            var matches = line.match(/(.*)\?xywh=(.*),(.*),(.*),(.*)/);
+            const matches = line.match(/(.*)\?xywh=(.*),(.*),(.*),(.*)/);
 
             thumbnails.push({
                 from: from,
@@ -198,16 +199,16 @@ if (typeof MediaElementPlayer !== "undefined") {
             const t = this;
 
             // Get the timeline from the video's "timeline" attribute.
-            let vid = media.querySelector("video");
-            let timeline = vid.dataset.timeline;
+            const vid = media.querySelector("video");
+            const timeline = vid.dataset.timeline;
 
             // Get the thumbnails VTT from a "thumbnails" track.
-            let thumbnailsTrack = vid.querySelector(
+            const thumbnailsTrack = vid.querySelector(
                 'track[label="thumbnails"]'
             );
-            let thumbnails = thumbnailsTrack.src;
+            const thumbnails = thumbnailsTrack.src;
 
-            let slider = controls.querySelector(
+            const slider = controls.querySelector(
                 "." + t.options.classPrefix + "time-slider"
             );
 
@@ -216,9 +217,7 @@ if (typeof MediaElementPlayer !== "undefined") {
                 timeline: timeline,
                 thumbnails: thumbnails
             });
-        },
-
-        cleantimelens(player, controls, layers, media) {}
+        }
     });
 }
 
@@ -243,7 +242,7 @@ if (typeof Clappr !== "undefined") {
         }
 
         _init() {
-            var bar = this.core.mediaControl.el.querySelector(
+            const bar = this.core.mediaControl.el.querySelector(
                 ".bar-background"
             );
 
