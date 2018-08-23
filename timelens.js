@@ -183,7 +183,7 @@ function pad(num, size){
 
 /* MediaElement.js */
 
-if (MediaElementPlayer) {
+if (typeof MediaElementPlayer !== "undefined") {
     Object.assign(MediaElementPlayer.prototype, {
         buildtimelens(player, controls, layers, media) {
             const t = this;
@@ -211,7 +211,7 @@ if (MediaElementPlayer) {
 
 /* Clappr */
 
-if (Clappr) {
+if (typeof Clappr !== "undefined") {
     class TimelensPlugin extends Clappr.UICorePlugin {
         get name() {
             return "timelens"
@@ -235,4 +235,6 @@ if (Clappr) {
             });
         }
     }
+
+    window.TimelensPlugin = TimelensPlugin;
 }
