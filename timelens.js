@@ -8,16 +8,16 @@ function timelens(container, options) {
     }
 
     var request = new XMLHttpRequest();
-    request.open('GET', vtt_url, true);
+    request.open("GET", vtt_url, true);
     request.send(null);
     request.onreadystatechange = function() {
         if (request.readyState === 4 && request.status === 200) {
-            var type = request.getResponseHeader('Content-Type');
+            var type = request.getResponseHeader("Content-Type");
             if (type.indexOf("text") !== 1) {
                 timelens2(container, request.responseText, options);
             }
         }
-    }
+    };
 }
 
 // Actually initialize Timelens.
@@ -74,38 +74,47 @@ function timelens2(container, vtt, options) {
         var progress = progressAtMouse(event, timeline);
         let seconds = progress * duration;
 
-        let thumbnail_dir = options.thumbnails.substring(0, options.thumbnails.lastIndexOf("/") + 1);
+        let thumbnail_dir = options.thumbnails.substring(
+            0,
+            options.thumbnails.lastIndexOf("/") + 1
+        );
 
         // Find the first entry in `thumbnails` which contains the current position.
         let active_thumbnail = null;
         for (let t of thumbnails) {
             if (seconds >= t.from && seconds <= t.to) {
                 active_thumbnail = t;
-                break
+                break;
             }
         }
 
         // Set respective background image.
-        thumbnail.style["background-image"] = "url(" + thumbnail_dir + active_thumbnail.file + ")";
+        thumbnail.style["background-image"] =
+            "url(" + thumbnail_dir + active_thumbnail.file + ")";
         // Move background to the correct location.
-        thumbnail.style["background-position"] = -active_thumbnail.x + "px " + -active_thumbnail.y + "px";
+        thumbnail.style["background-position"] =
+            -active_thumbnail.x + "px " + -active_thumbnail.y + "px";
 
         // Set thumbnail div to correct size.
         thumbnail.style.width = active_thumbnail.w + "px";
         thumbnail.style.height = active_thumbnail.h + "px";
 
         // Move thumbnail div to the correct position.
-        thumbnail.style.marginLeft = Math.min(
-            Math.max(0, x - thumbnail.offsetWidth / 2),
-            timeline.offsetWidth - thumbnail.offsetWidth
-        ) + "px";
+        thumbnail.style.marginLeft =
+            Math.min(
+                Math.max(0, x - thumbnail.offsetWidth / 2),
+                timeline.offsetWidth - thumbnail.offsetWidth
+            ) + "px";
 
         time.innerHTML = to_timestamp(seconds);
     };
 
     if (options.position) {
         setInterval(function() {
-            marker.style.marginLeft = options.position() / duration * timeline.offsetWidth - 11 + "px";
+            marker.style.marginLeft =
+                (options.position() / duration) * timeline.offsetWidth -
+                11 +
+                "px";
         }, 1);
     }
 }
@@ -129,7 +138,7 @@ function to_timestamp(seconds_total) {
     let minutes = Math.floor(seconds_total / 60 - hours * 60);
     let seconds = Math.floor(seconds_total - 60 * minutes - hours * 60 * 60);
 
-    let timestamp = minutes+":"+pad(seconds, 2);
+    let timestamp = minutes + ":" + pad(seconds, 2);
 
     if (hours > 0) {
         return hours + ":" + pad(timestamp, 5);
@@ -169,7 +178,7 @@ function parseVTT(vtt) {
                 x: matches[2],
                 y: matches[3],
                 w: matches[4],
-                h: matches[5],
+                h: matches[5]
             });
         }
     }
@@ -177,8 +186,8 @@ function parseVTT(vtt) {
     return thumbnails;
 }
 
-function pad(num, size){
-    return ('000000000' + num).substr(-size);
+function pad(num, size) {
+    return ("000000000" + num).substr(-size);
 }
 
 /* MediaElement.js */
@@ -193,10 +202,14 @@ if (typeof MediaElementPlayer !== "undefined") {
             let timeline = vid.dataset.timeline;
 
             // Get the thumbnails VTT from a "thumbnails" track.
-            let thumbnailsTrack = vid.querySelector("track[label=\"thumbnails\"]");
+            let thumbnailsTrack = vid.querySelector(
+                'track[label="thumbnails"]'
+            );
             let thumbnails = thumbnailsTrack.src;
 
-            let slider = controls.querySelector('.' + t.options.classPrefix + 'time-slider');
+            let slider = controls.querySelector(
+                "." + t.options.classPrefix + "time-slider"
+            );
 
             // Initialize the Timelens interface.
             timelens(slider, {
@@ -214,19 +227,25 @@ if (typeof MediaElementPlayer !== "undefined") {
 if (typeof Clappr !== "undefined") {
     class TimelensPlugin extends Clappr.UICorePlugin {
         get name() {
-            return "timelens"
+            return "timelens";
         }
 
         constructor(core) {
-            super(core)
+            super(core);
         }
 
         bindEvents() {
-            this.listenTo(this.core.mediaControl, Clappr.Events.MEDIACONTROL_RENDERED, this._init)
+            this.listenTo(
+                this.core.mediaControl,
+                Clappr.Events.MEDIACONTROL_RENDERED,
+                this._init
+            );
         }
 
         _init() {
-            var bar = this.core.mediaControl.el.querySelector(".bar-background");
+            var bar = this.core.mediaControl.el.querySelector(
+                ".bar-background"
+            );
 
             // Initialize the Timelens interface.
             timelens(bar, {
