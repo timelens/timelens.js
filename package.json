@@ -1,0 +1,19 @@
+{
+    "name": "timelens",
+    "version": "0.1.0",
+    "description": "Enhances web-based video players with a visual timeline and hover thumbnails, which make navigation more efficient, precise, and active. Comes with a general-purpose JavaScript library, and with plugins for various players.",
+    "keywords": [
+        "visual timeline",
+        "thumbnails",
+        "video",
+        "navigation",
+        "plugin",
+        "mediaelement",
+        "clappr"
+    ],
+    "homepage": "https://timelens.io",
+    "bugs": "https://github.com/timelens/timelens.js/issues",
+    "license": "GPL-2.0-or-later",
+    "author": "Sebastian Morr <sebastian@morr.cc>",
+    "repository": "https://github.com/timelens/timelens.js"
+}
