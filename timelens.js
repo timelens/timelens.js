@@ -52,8 +52,12 @@ function timelens2(container, vtt, options) {
     // Create .marker div, which is used to display the current position.
     if (options.position) {
         var marker = document.createElement("div");
-        marker.className = "timelens-marker";
+        marker.className = "timelens-marker-border";
         container.appendChild(marker);
+
+        var markerInner = document.createElement("div");
+        markerInner.className = "timelens-marker";
+        marker.appendChild(markerInner);
     }
 
     // Assemble everything together.
