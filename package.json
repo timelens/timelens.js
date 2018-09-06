@@ -1,6 +1,6 @@
 {
     "name": "timelens",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "description": "Enhances web-based video players with a visual timeline and hover thumbnails, which make navigation more efficient, precise, and active. Comes with a general-purpose JavaScript library, and with plugins for various players.",
     "keywords": [
         "visual timeline",
