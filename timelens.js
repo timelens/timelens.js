@@ -229,7 +229,7 @@ if (typeof MediaElementPlayer !== "undefined") {
 /* Clappr */
 
 if (typeof Clappr !== "undefined") {
-    class TimelensPlugin extends Clappr.UICorePlugin {
+    class Timelens extends Clappr.UICorePlugin {
         get name() {
             return "timelens";
         }
@@ -264,5 +264,5 @@ if (typeof Clappr !== "undefined") {
         }
     }
 
-    window.TimelensPlugin = TimelensPlugin;
+    window.Timelens = Timelens;
 }
