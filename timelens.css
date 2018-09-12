@@ -102,6 +102,7 @@
 .media-control .bar-background {
     height: 40px !important;
     margin-top: -40px;
+    box-shadow: 0 0 0 2px #eee;
 }
 
 .media-control .seek-time,
