@@ -208,6 +208,12 @@ if (typeof MediaElementPlayer !== "undefined") {
             const thumbnailsTrack = vid.querySelector(
                 'track[label="thumbnails"]'
             );
+
+            // When there's insufficient data, don't initialize Timelens.
+            if (!timeline || !thumbnailsTrack) {
+                return;
+            }
+
             const thumbnails = thumbnailsTrack.src;
 
             const slider = controls.querySelector(
