@@ -95,7 +95,7 @@ function timelens2(container, vtt, options) {
 
         // Set respective background image.
         thumbnail.style["background-image"] =
-            "url(" + thumbnail_dir + active_thumbnail.file + ")";
+            'url("' + thumbnail_dir + active_thumbnail.file + '")';
         // Move background to the correct location.
         thumbnail.style["background-position"] =
             -active_thumbnail.x + "px " + -active_thumbnail.y + "px";
