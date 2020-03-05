@@ -1,3 +1,9 @@
+# 0.1.2 (2020-03-05)
+
+Fixed:
+
+- Prevent the thumbnail from triggering mouse events.
+
 # 0.1.1 (2018-09-06)
 
 Feature enhancements:
