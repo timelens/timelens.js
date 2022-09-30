@@ -11,9 +11,9 @@
         "mediaelement",
         "clappr"
     ],
-    "homepage": "https://timelens.io",
+    "homepage": "https://timelens.blinry.org",
     "bugs": "https://github.com/timelens/timelens.js/issues",
     "license": "GPL-2.0-or-later",
-    "author": "Sebastian Morr <sebastian@morr.cc>",
+    "author": "blinry <mail@blinry.org>",
     "repository": "https://github.com/timelens/timelens.js"
 }
